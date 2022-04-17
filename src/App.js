@@ -1,16 +1,15 @@
 import { useState } from "react";
 import "./App.css";
+import { ListItems } from "./component/Lists/ListItems";
 
 function App() {
   const [inputValue, setInputValue] = useState("");
   const [todos, setTodos] = useState([]);
 
-  // remove item from todo list and ul
-  const removeItem = (index) => {
-    console.log(index);
-    // const index = e.target.dataset.index;
-    // setTodos(todos.splice(index, 1));
-    // console.log(e.target.key);
+  const removeTodo = (index) => {
+    const newTodos = [...todos];
+    newTodos.splice(index, 1);
+    setTodos(newTodos);
   };
 
   // add todo function
@@ -36,24 +35,18 @@ function App() {
           Add
         </span>
       </div>
-      {todos.length < 1 && todos ? (
-        <h2>No todos</h2>
-      ) : (
-        <ul id="myUL" key={"my-todo-list"}>
-          {todos.map((todo, index) => (
-            <li key={index}>
-              <span
-                className="close"
-                key={"todo_number" + index}
-                onClick={removeItem(index)}
-              >
-                X
-              </span>
-              {todo}
-            </li>
-          ))}
-        </ul>
-      )}
+      {
+        // if todos array is empty show this message else show list items component with todos array as props
+        todos.length < 1 && todos ? (
+          <h2>No todos</h2>
+        ) : (
+          <ul id="myUL" key={"my-todo-list"}>
+            <ListItems todos={todos} removeItem={removeTodo} />{" "}
+            {/* pass todos array to ListItems */}
+          </ul>
+        )
+        // <ListItems todos={todos} /> {/* pass todos array to ListItems */}
+      }
     </>
   );
 }
